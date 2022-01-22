@@ -1,32 +1,25 @@
-import * as React from "react"
-import Container from "@mui/material/Container"
-import Typography from "@mui/material/Typography"
-import Box from "@mui/material/Box"
-import Input from "@mui/material/Input"
-import { getWordForDate } from "./solver"
-
-const dateToHumanReadable = (date: Date): string => {
-	if (date.getDate() === new Date().getDate()) {
-		return "today"
-	}
-	else if (date.getDate() === new Date().getDate() + 1) {
-		return "tomorrow"
-	}
-	else if (date.getDate() === new Date().getDate() - 1) {
-		return "yesterday"
-	}
-	return dateToYYYYMMDD(date)
-}
-
-const dateToYYYYMMDD = (date: Date): string => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+import React from "react"
+import { Button, Container } from "@mui/material"
+import { Typography } from "@mui/material"
+import { Box } from "@mui/material"
+import { Input } from "@mui/material"
+import { getWordForDate, dateToHumanReadable, dateToYYYYMMDD } from "./util"
 
 export default function App() {
-	const [date, setDate] = React.useState(new Date())
+	const [date, setDate] = React.useState(new Date()),
+		[revealed, setRevealed] = React.useState(false),
+		wordForDate = getWordForDate(date),
+		formattedDate = dateToHumanReadable(date)
+
 	return (
 		<Container maxWidth="md">
 			<Box sx={{ my: 4, textAlign: "center" }}>
 				<Typography variant="h3" component="h1" gutterBottom>
 					Wordle Solver
+				</Typography>
+
+				<Typography variant="body2" component="h2" gutterBottom>
+					marzeq © {new Date().getFullYear()}
 				</Typography>
 
 				<Typography variant="h6" gutterBottom>
@@ -39,11 +32,18 @@ export default function App() {
 						setDate(new Date())
 						e.target.value = dateToYYYYMMDD(new Date())
 					}
+					setRevealed(false)
 				}} />
 
-				<Typography variant="body1" gutterBottom sx={{ my: 2 }}>
-					The word for {dateToHumanReadable(date)} is: {getWordForDate(date)}
-				</Typography>
+				{revealed ?
+					<Typography variant="body1" gutterBottom sx={{ my: 2 }}>
+						Word for {formattedDate}: {wordForDate}
+					</Typography>
+					:
+					<Button onClick={() => setRevealed(true)}>
+						Reveal Word
+					</Button>
+				}
 			</Box>
 		</Container>
 	)
