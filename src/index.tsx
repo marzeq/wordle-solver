@@ -5,20 +5,19 @@ import { ThemeProvider } from "@mui/material/styles"
 import App from "./App"
 import { createTheme } from "@mui/material/styles"
 import { red } from "@mui/material/colors"
-import { doesPreferDark } from "./util"
 
 const theme = createTheme({
 	palette: {
 		primary: {
-			main: "#556cd6",
+			main: "#21de3d",
 		},
 		secondary: {
-			main: "#19857b",
+			main: "#6e5c62",
 		},
 		error: {
 			main: red.A400,
 		},
-		mode: doesPreferDark() ? "dark" : "light",
+		mode: window.matchMedia("(prefers-color-scheme: dark)").matches === true ? "dark" : "light",
 	},
 
 })
